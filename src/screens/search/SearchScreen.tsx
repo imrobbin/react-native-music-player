@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, TextInput} from 'react-native';
-import {Box, Text} from 'react-native-design-utility';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, TextInput } from 'react-native';
+import { Box, Text } from 'react-native-design-utility';
 
-import {theme} from '../../constants/theme';
-import {ChannelService} from '../../services';
-import {SearchEmpty, SearchLoading, SearchResultTile} from '../../components';
+import { theme } from '../../constants/theme';
+import { ChannelService } from '../../services';
+import {
+  SearchEmpty,
+  LoadingIndicator,
+  SearchResultTile,
+} from '../../components';
 
 const SearchScreen = () => {
   const [term, setTerm] = useState<string>('');
@@ -14,7 +18,7 @@ const SearchScreen = () => {
 
   const onSearch = async () => {
     setIsLoading(true);
-    const {data, success} = await ChannelService.SearchChannels(term);
+    const { data, success } = await ChannelService.getSearchChannels(term);
     success ? setSearchResults(data) : setIsError(true);
     setIsLoading(false);
   };
@@ -43,9 +47,9 @@ const SearchScreen = () => {
           keyboardShouldPersistTaps="never"
           contentContainerStyle={styles.listContentContainer}
           ListEmptyComponent={<>{!isLoading && <SearchEmpty />}</>}
-          ListHeaderComponent={<>{isLoading && <SearchLoading />}</>}
+          ListHeaderComponent={<>{isLoading && <LoadingIndicator />}</>}
           data={searchResults ?? []}
-          renderItem={({item}) => <SearchResultTile item={item} />}
+          renderItem={({ item }) => <SearchResultTile item={item} />}
           keyExtractor={(item: any) => String(item.id)}
         />
       )}

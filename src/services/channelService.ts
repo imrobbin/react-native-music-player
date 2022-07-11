@@ -26,7 +26,7 @@ const ChannelService = {
     }
   },
 
-  SearchChannels: async (title: string) => {
+  getSearchChannels: async (title: string) => {
     const result: Result = {
       success: false,
       data: null,
@@ -37,6 +37,24 @@ const ChannelService = {
       const {data} = await AxiosInstance.get(URL.SearchChannels + title);
       result.success = true;
       result.data = data.body.channels;
+      return result;
+    } catch (error: any) {
+      return checkResponseError(error);
+    }
+  },
+
+  getChannelAudioClips: async (channelID: string) => {
+    const result: Result = {
+      success: false,
+      data: null,
+      errorCode: 0,
+    };
+
+    try {
+      const url = `${URL.ChannelAudioClips + channelID}/audio_clips`;
+      const {data} = await AxiosInstance.get(url);
+      result.success = true;
+      result.data = data.body.audio_clips;
       return result;
     } catch (error: any) {
       return checkResponseError(error);
