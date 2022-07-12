@@ -10,4 +10,4 @@ const AxiosInstance = axios.create({
   },
 });
 
-export {AxiosInstance, ChannelService};
+export { AxiosInstance, ChannelService };

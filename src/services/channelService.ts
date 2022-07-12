@@ -1,6 +1,6 @@
-import {AxiosError} from 'axios';
-import {AxiosInstance} from '.';
-import {URL} from '../constants';
+import { AxiosError } from 'axios';
+import { AxiosInstance } from '.';
+import { URL } from '../constants';
 
 interface Result {
   success: boolean;
@@ -16,7 +16,7 @@ const ChannelService = {
       errorCode: 0,
     };
     try {
-      const {data} = await AxiosInstance.get(URL.RecommendedChannels);
+      const { data } = await AxiosInstance.get(URL.RecommendedChannels);
       console.log('getRecommendedChannels result ', data);
       result.success = true;
       result.data = data;
@@ -34,7 +34,7 @@ const ChannelService = {
     };
 
     try {
-      const {data} = await AxiosInstance.get(URL.SearchChannels + title);
+      const { data } = await AxiosInstance.get(URL.SearchChannels + title);
       result.success = true;
       result.data = data.body.channels;
       return result;
@@ -52,7 +52,7 @@ const ChannelService = {
 
     try {
       const url = `${URL.ChannelAudioClips + channelID}/audio_clips`;
-      const {data} = await AxiosInstance.get(url);
+      const { data } = await AxiosInstance.get(url);
       result.success = true;
       result.data = data.body.audio_clips;
       return result;

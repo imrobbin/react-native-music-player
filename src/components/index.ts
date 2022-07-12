@@ -5,6 +5,7 @@ import PodcastResultTile from './PodcastResultTile';
 import ShowError from './ShowError';
 import PodcastResultHeader from './PodcastResultHeader';
 import ListItemSeparator from './ListItemSeparator';
+import MiniPlayer from './MiniPlayer';
 
 export {
   SearchEmpty,
@@ -14,4 +15,5 @@ export {
   ShowError,
   PodcastResultHeader,
   ListItemSeparator,
+  MiniPlayer,
 };

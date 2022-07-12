@@ -1,6 +1,9 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  BottomTabBar,
+} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
 import {
@@ -11,6 +14,7 @@ import {
 } from '../screens';
 import { theme } from '../constants/theme';
 import { SearchStackRouteParamList } from './types';
+import { MiniPlayer } from '../components';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -63,7 +67,14 @@ const MainTab = createBottomTabNavigator();
 
 const MainTabNavigator = () => {
   return (
-    <MainTab.Navigator screenOptions={{ headerShown: false }}>
+    <MainTab.Navigator
+      tabBar={tabsProps => (
+        <>
+          <MiniPlayer />
+          <BottomTabBar {...tabsProps} />
+        </>
+      )}
+      screenOptions={{ headerShown: false }}>
       <MainTab.Screen
         options={{
           tabBarLabel: 'Home',
