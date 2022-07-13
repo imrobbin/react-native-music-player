@@ -1,6 +1,6 @@
 import React from 'react';
 // import {StyleSheet} from 'react-native';
-import {Text, Box} from 'react-native-design-utility';
+import { Text, Box } from 'react-native-design-utility';
 
 const HomeScreen = () => {
   return (

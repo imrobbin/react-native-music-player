@@ -74,7 +74,12 @@ const MainTabNavigator = () => {
           <BottomTabBar {...tabsProps} />
         </>
       )}
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{
+        headerShown: false,
+        // tabBarStyle: { borderTopWidth: 0, elevation: 0 },
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: theme.color.blueLight,
+      }}>
       <MainTab.Screen
         options={{
           tabBarLabel: 'Home',
