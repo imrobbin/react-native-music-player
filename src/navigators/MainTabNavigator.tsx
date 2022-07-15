@@ -26,6 +26,11 @@ const HomeStackNavigator = () => {
         name="HomeScreen"
         component={HomeScreen}
       />
+      <HomeStack.Screen
+        options={{ headerTitle: '', headerTintColor: theme.color.blueLight }}
+        name="PodcastDetails"
+        component={PodcastDetailsScreen}
+      />
     </HomeStack.Navigator>
   );
 };

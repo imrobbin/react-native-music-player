@@ -13,7 +13,7 @@ module.exports = async function () {
   TrackPlayer.addEventListener(
     Event.PlaybackState,
     ({ state }: { state: State }) =>
-      console.log('playback-state changed ', State[state]),
+      console.log('TrackPlayer Service Playback-State changed ', State[state]),
   );
   TrackPlayer.addEventListener(Event.RemoteJumpForward, async () => {
     const position = await TrackPlayer.getPosition();

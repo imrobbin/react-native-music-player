@@ -4,6 +4,7 @@ export type SearchStackRouteParamList = {
 };
 
 export type MainStackRouteParamList = {
-  Tabs: undefined;
-  Player: undefined;
+  TabsScreen: undefined;
+  PlayerScreen: undefined;
+  QueueScreen: undefined;
 };

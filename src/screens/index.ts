@@ -3,6 +3,7 @@ import SearchScreen from './search/SearchScreen';
 import LibraryScreen from './library/LibraryScreen';
 import PodcastDetailsScreen from './podcastDetails/PodcastDetailsScreen';
 import PlayerScreen from './player/PlayerScreen';
+import QueueScreen from './queue/QueueScreen';
 
 export {
   HomeScreen,
@@ -10,4 +11,5 @@ export {
   LibraryScreen,
   PodcastDetailsScreen,
   PlayerScreen,
+  QueueScreen,
 };

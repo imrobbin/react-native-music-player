@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import { AxiosInstance } from '.';
 import { URL } from '../constants';
+import { Track } from 'react-native-track-player';
 
 interface Result {
   success: boolean;
@@ -17,9 +18,8 @@ const ChannelService = {
     };
     try {
       const { data } = await AxiosInstance.get(URL.RecommendedChannels);
-      console.log('getRecommendedChannels result ', data);
       result.success = true;
-      result.data = data;
+      result.data = data.body;
       return result;
     } catch (error: any) {
       return checkResponseError(error);
@@ -54,7 +54,18 @@ const ChannelService = {
       const url = `${URL.ChannelAudioClips + channelID}/audio_clips`;
       const { data } = await AxiosInstance.get(url);
       result.success = true;
-      result.data = data.body.audio_clips;
+
+      result.data = data.body.audio_clips.map((track: Track) => ({
+        id: track.id,
+        url: track.urls.high_mp3,
+        title: track.title,
+        description: track.description,
+        album: track.channel.title,
+        artist: track.user.username,
+        artwork: track.urls.image,
+        date: track.uploaded_at,
+        duration: track.duration,
+      }));
       return result;
     } catch (error: any) {
       return checkResponseError(error);
@@ -68,7 +79,7 @@ const checkResponseError = (error: AxiosError) => {
     data: null,
     errorCode: 0,
   };
-  console.log('error ', error);
+  console.error('Service Error => ', error);
   if (error.response) {
     /*
      * The request was made and the server responded with a

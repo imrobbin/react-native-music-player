@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Box, Text } from 'react-native-design-utility';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import FastImage from 'react-native-fast-image';
+
 import { SearchStackRouteParamList } from '../navigators/types';
 
 // type SearchResultProps = {
@@ -25,16 +27,18 @@ const SearchResultTile = ({ item }: any): JSX.Element => {
         navigation.navigate('PodcastDetails', { searchData: item })
       }>
       <Box h={90} dir="row" align="center" px="sm">
-        <Box h={70} w={70} bg="blue" mr="sm" radius={10}>
+        <Box h={70} w={70} bg="blueLight" mr="sm" radius={10}>
           {item.urls.logo_image.original && (
-            <Image
+            <FastImage
               source={{ uri: item.urls.logo_image.original }}
               style={styles.img}
             />
           )}
         </Box>
         <Box f={1}>
-          <Text bold>{item.title}</Text>
+          <Text bold numberOfLines={2}>
+            {item.title}
+          </Text>
           <Text size="xs" color="grey" numberOfLines={1} capitalize>
             {item.channel_style}
           </Text>

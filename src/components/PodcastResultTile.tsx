@@ -1,15 +1,17 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Box, Text } from 'react-native-design-utility';
 import Icon from 'react-native-vector-icons/Feather';
+import FastImage from 'react-native-fast-image';
 
 import { theme } from '../constants/theme';
 import { usePlayerContext } from '../contexts/PlayerContext';
 import { humanDuration } from '../helpers';
 import getDateTime from '../helpers/dateTime';
 
-const PodcastResultTile = ({ item }: any): JSX.Element => {
+const PodcastResultTile = ({ index, item, tracks }: any): JSX.Element => {
   const playerContext = usePlayerContext();
+  const currentTrack = playerContext.currentTrack;
 
   return (
     <Box px="sm">
@@ -21,8 +23,8 @@ const PodcastResultTile = ({ item }: any): JSX.Element => {
           bg="blueLight"
           mr="sm"
           style={styles.imgBox}>
-          {item.urls.image && (
-            <Image source={{ uri: item.urls.image }} style={styles.img} />
+          {item.artwork && (
+            <FastImage source={{ uri: item.artwork }} style={styles.img} />
           )}
         </Box>
         <Box justify="center" f={1}>
@@ -31,12 +33,11 @@ const PodcastResultTile = ({ item }: any): JSX.Element => {
             bold
             numberOfLines={2}
             style={
-              playerContext.currentTrack !== null &&
-              playerContext.currentTrack.id === item.id
+              currentTrack !== null && currentTrack.id === item.id
                 ? styles.selectedTrack
                 : null
             }>
-            {item.episode_number} {item.title}
+            {item.title}
           </Text>
         </Box>
       </Box>
@@ -52,17 +53,15 @@ const PodcastResultTile = ({ item }: any): JSX.Element => {
       <Box dir="row" mt="sm" align="center" justify="between">
         <Box>
           <Text color="grey" size="sm">
-            {getDateTime(item.uploaded_at)} &bull;{' '}
-            {humanDuration(item.duration)}
+            {getDateTime(item.date)} &bull; {humanDuration(item.duration)}
           </Text>
         </Box>
 
         <Box>
-          {playerContext.currentTrack !== null &&
-          playerContext.currentTrack.id === item.id ? (
+          {currentTrack !== null && currentTrack.id === item.id ? (
             <TouchableOpacity onPress={() => playerContext.playPauseAudio()}>
               <Icon
-                name={playerContext.isPaused ? 'play-circle' : 'pause-circle'}
+                name={playerContext.isReady ? 'play-circle' : 'pause-circle'}
                 size={30}
                 color={theme.color.blueLight}
               />
@@ -70,15 +69,16 @@ const PodcastResultTile = ({ item }: any): JSX.Element => {
           ) : (
             <TouchableOpacity
               onPress={() => {
-                playerContext.play({
+                playerContext.play(index, tracks);
+              }}>
+              {/* {
                   id: item.id,
                   url: item.urls.high_mp3,
                   title: item.title,
                   artwork: item.urls.image,
                   artist: item.user.username,
                   album: item.channel.title,
-                });
-              }}>
+                } */}
               <Icon
                 name="play-circle"
                 size={30}

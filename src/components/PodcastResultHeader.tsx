@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Box, Text } from 'react-native-design-utility';
+import FastImage from 'react-native-fast-image';
 
 const PodcastResultHeader = ({ searchData }: any): JSX.Element => {
   return (
@@ -8,14 +9,14 @@ const PodcastResultHeader = ({ searchData }: any): JSX.Element => {
       <Box dir="row" px="sm" my="sm">
         {searchData.urls.logo_image.original && (
           <Box w={150} h={150} radius={10} mr="sm" bg="blueLight">
-            <Image
+            <FastImage
               source={{ uri: searchData.urls.logo_image.original }}
               style={styles.img}
             />
           </Box>
         )}
-        <Box f={1}>
-          <Text size="lg" bold>
+        <Box f={1} justify="center">
+          <Text size="xl" bold>
             {searchData.title}
           </Text>
           <Text size="xs" color="blueLight">

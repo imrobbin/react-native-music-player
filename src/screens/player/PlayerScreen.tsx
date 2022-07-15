@@ -1,24 +1,32 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
-  Image,
   TouchableOpacity,
 } from 'react-native';
 import { Text, Box } from 'react-native-design-utility';
 import Icon from 'react-native-vector-icons/Feather';
-import ProgressSlider from '../../components/ProgressSlider';
+import FastImage from 'react-native-fast-image';
 
+import ProgressSlider from '../../components/ProgressSlider';
 import { theme } from '../../constants/theme';
 import { usePlayerContext } from '../../contexts/PlayerContext';
+import { MainStackRouteParamList } from '../../navigators/types';
+import { makeHitSlop } from '../../constants';
 
 const { width, height } = Dimensions.get('window');
 
+type PlayerScreenProp = NativeStackNavigationProp<
+  MainStackRouteParamList,
+  'QueueScreen'
+>;
+
 const PlayerScreen = (): JSX.Element => {
   const playerContext = usePlayerContext();
-  const navigation = useNavigation();
+  const navigation = useNavigation<PlayerScreenProp>();
 
   const track = playerContext.currentTrack;
 
@@ -28,23 +36,14 @@ const PlayerScreen = (): JSX.Element => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Box f={1} bg="white" pt="md">
+      <Box f={1} bg="white">
         {/* Header with Title */}
-        <Box px="md" mb={theme.space.xl} dir="row">
-          <Box f={0.2}>
+        <Box h={60} px="sm" mb="xl" dir="row" align="center">
+          <Box f={0.2} align="start">
             <TouchableOpacity
               onPress={navigation.goBack}
-              hitSlop={{
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20,
-              }}>
-              <Icon
-                name="chevron-down"
-                size={30}
-                color={theme.color.blueLight}
-              />
+              hitSlop={makeHitSlop(20)}>
+              <Icon name="chevron-down" size={30} color={theme.color.black} />
             </TouchableOpacity>
           </Box>
           <Box f={1} center>
@@ -52,45 +51,53 @@ const PlayerScreen = (): JSX.Element => {
               {track.album}
             </Text>
           </Box>
-          <Box f={0.2} />
+          <Box f={0.2} align="end">
+            <TouchableOpacity
+              onPress={() => navigation.navigate('QueueScreen')}
+              hitSlop={makeHitSlop(20)}>
+              <Icon name="list" size={30} color={theme.color.black} />
+            </TouchableOpacity>
+          </Box>
         </Box>
 
         {/* Banner Image */}
-        <Box center style={styles.imgContainer}>
-          <Image source={{ uri: `${track.artwork}` }} style={styles.img} />
+        <Box center style={styles.imgContainer} mb="xl">
+          <FastImage source={{ uri: `${track.artwork}` }} style={styles.img} />
         </Box>
 
-        <Box center mb="md" px="md">
+        <Box center mb="md" mt="md">
           <Text bold>{track.title}</Text>
           <Text color="grey" size="sm">
             {track.artist}
           </Text>
         </Box>
 
-        <Box px="xs">
+        {/* progress slider */}
+        <Box>
           <ProgressSlider />
         </Box>
 
+        {/* media controls */}
         <Box dir="row" align="center" justify="center">
           <Box>
             <TouchableOpacity onPress={() => playerContext.seekTo(-10)}>
-              <Icon name="rotate-ccw" size={40} color={theme.color.blueLight} />
+              <Icon name="rotate-ccw" size={30} color={theme.color.blueLight} />
             </TouchableOpacity>
           </Box>
           <Box mx="md">
             {playerContext.isPaused ? (
               <TouchableOpacity onPress={() => playerContext.playPauseAudio()}>
-                <Icon name="play" size={60} color={theme.color.blueLight} />
+                <Icon name="play" size={50} color={theme.color.blueLight} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={() => playerContext.pause()}>
-                <Icon name="pause" size={60} color={theme.color.blueLight} />
+                <Icon name="pause" size={50} color={theme.color.blueLight} />
               </TouchableOpacity>
             )}
           </Box>
           <Box>
             <TouchableOpacity onPress={() => playerContext.seekTo()}>
-              <Icon name="rotate-cw" size={40} color={theme.color.blueLight} />
+              <Icon name="rotate-cw" size={30} color={theme.color.blueLight} />
             </TouchableOpacity>
           </Box>
         </Box>
@@ -106,11 +113,13 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     // height is 60%
-    height: `${(((height * 3) / 5) * 100) / height}%`,
+    // height: `${(((height * 3) / 5) * 100) / height}%`,
+    // height is 50%
+    height: `${((height / 2) * 100) / height}%`,
   },
   img: {
-    width: width - theme.space.md * 2,
-    height: width - theme.space.md * 2,
+    width: width - theme.space.sm * 2,
+    height: width - theme.space.sm * 2,
     borderRadius: 10,
   },
 });

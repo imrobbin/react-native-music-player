@@ -48,7 +48,9 @@ const PodcastDetailsScreen = () => {
             {isError && <ShowError />}
           </>
         }
-        renderItem={({ item }) => <PodcastResultTile item={item} />}
+        renderItem={({ item, index }) => (
+          <PodcastResultTile index={index} item={item} tracks={audioClips} />
+        )}
       />
     </Box>
   );

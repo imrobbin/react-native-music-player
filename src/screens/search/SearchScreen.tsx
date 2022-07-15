@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInput } from 'react-native';
 import { Box, Text } from 'react-native-design-utility';
+import Icon from 'react-native-vector-icons/Feather';
 
 import { theme } from '../../constants/theme';
 import { ChannelService } from '../../services';
@@ -25,17 +26,28 @@ const SearchScreen = () => {
 
   return (
     <Box f={1} bg="white">
-      <Box h={50} w="100%" px="sm" mt="sm" my="sm">
-        <TextInput
-          placeholder="Search podcast"
-          style={styles.input}
-          selectionColor={theme.color.blueLight}
-          placeholderTextColor={theme.color.greyLight}
-          onChangeText={setTerm}
-          value={term}
-          onSubmitEditing={onSearch}
-          autoCorrect={false}
-        />
+      <Box h={50} w="100%" px="sm" my="sm">
+        <Box
+          dir="row"
+          h={40}
+          align="center"
+          bg="greyLightest"
+          radius={10}
+          px="sm">
+          <Box mr="sm">
+            <Icon name="search" size={24} color={theme.color.greyDark} />
+          </Box>
+          <TextInput
+            placeholder="Search Podcast"
+            style={styles.input}
+            selectionColor={theme.color.blueLight}
+            placeholderTextColor={theme.color.greyLight}
+            onChangeText={setTerm}
+            value={term}
+            onSubmitEditing={onSearch}
+            autoCorrect={false}
+          />
+        </Box>
       </Box>
 
       {isError ? (
@@ -61,12 +73,8 @@ export default SearchScreen;
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
     flex: 1,
-    backgroundColor: theme.color.greyLightest,
-    borderRadius: 10,
-    paddingHorizontal: theme.space.sm,
-    fontSize: theme.text.size.md,
+    fontSize: theme.text.size.sm,
     color: theme.color.black,
   },
   listContentContainer: {

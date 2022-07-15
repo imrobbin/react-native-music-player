@@ -1,59 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UtilityThemeProvider } from 'react-native-design-utility';
 import { NavigationContainer } from '@react-navigation/native';
-import TrackPlayer, { Capability } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 
 import { theme } from './src/constants/theme';
 import MainStackNavigator from './src/navigators/MainStackNavigator';
 import { LoadingIndicator } from './src/components';
 import { PlayerContextProvider } from './src/contexts/PlayerContext';
+import { PlayerSetupService } from './src/services';
 
 const App = (): JSX.Element => {
-  const [isReady, setIsReady] = React.useState<boolean>(false);
+  const [isPlayerReady, setIsPlayerReady] = useState<boolean>(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
-      await TrackPlayer.setupPlayer().then(() => {
-        TrackPlayer.updateOptions({
-          stopWithApp: true,
-          capabilities: [
-            Capability.Play,
-            Capability.Pause,
-            Capability.Stop,
-            Capability.SkipToNext,
-            Capability.SkipToPrevious,
-            Capability.JumpForward,
-            Capability.JumpBackward,
-          ],
-          compactCapabilities: [
-            Capability.Play,
-            Capability.Pause,
-            Capability.Stop,
-            Capability.SkipToNext,
-            Capability.SkipToPrevious,
-            // Capability.JumpForward,
-            // Capability.JumpBackward,
-          ],
-          forwardJumpInterval: 20,
-          backwardJumpInterval: 20,
-        });
-        console.log('TrackPlayer setup done.');
-        setIsReady(true);
-      });
+      const isPlayerSetup = await PlayerSetupService();
+      setIsPlayerReady(isPlayerSetup);
     })();
 
     return () => {
-      destryPlayer();
+      destroyPlayer();
     };
   }, []);
 
-  const destryPlayer = async () => {
+  const destroyPlayer = async () => {
     await TrackPlayer.destroy();
   };
 
   return (
     <UtilityThemeProvider theme={theme}>
-      {isReady ? (
+      {isPlayerReady ? (
         <PlayerContextProvider>
           <NavigationContainer>
             <MainStackNavigator />
